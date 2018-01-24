@@ -1,16 +1,11 @@
-server:
-    # context-path: /myboot
-    session-timeout: 1800
-#    tomcat:
-#        max-threads: 1000
-#        min-spare-threads: 30
-    port: 8088
-#    uri-encoding: utf-8
 
 spring:
 # 应用配置
   application:
     name: quentin
+# 多环境配置文件激活属性
+  profiles:
+    active: dev
 # 远程工具设置
   devtools:
     remote:

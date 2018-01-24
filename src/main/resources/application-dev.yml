@@ -1,0 +1,21 @@
+server:
+    # context-path: /myboot
+    session-timeout: 1800
+#    tomcat:
+#        max-threads: 1000
+#        min-spare-threads: 30
+    port: 8088
+#    uri-encoding: utf-8
+
+#系统定义随机数
+myapp:
+  # 随机字符串
+  secret: ${random.value}
+  # 随机int
+  number: ${random.int}
+  # 随机long
+  bignumber: ${random.long}
+  # 10以内的随机数
+  numberlessthanten: ${random.int(10)}
+  # 1024-65536的随机数
+  numberinrange: ${random.int[1024,65536]}

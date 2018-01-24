@@ -2,6 +2,7 @@ package com.quentin.example.web.controller;
 
 import com.quentin.example.domain.OptEwbVO;
 import com.quentin.example.domain.mapper.OptEwbVOMapper;
+import com.quentin.example.exception.MyException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -62,6 +63,11 @@ public class EwbController {
     @RequestMapping("/showEwbss")
     public String ewbPage() {
         return "ssss12";
+    }
+
+    @RequestMapping("/exception")
+    public String showMyException() throws MyException {
+        throw new MyException("布吉岛发生了什么异常");
     }
 
 }
