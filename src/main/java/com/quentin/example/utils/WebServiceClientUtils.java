@@ -64,7 +64,8 @@ public class WebServiceClientUtils {
             Class<?> orderClass = partInfo.getTypeClass();
             Object orderObject = orderClass.newInstance();
 
-            getKeyAndValue(params, orderObject);
+            //设置参数
+            setKeyAndValue(params, orderObject);
 
             // 调用远程方法并打印结果
             result = client.invoke(opName, orderObject);
@@ -85,7 +86,7 @@ public class WebServiceClientUtils {
      * @Date: 2018/1/4 9:43
      * @version 1.0
      */
-    private static void getKeyAndValue(Object inObj, Object outObj) {
+    private static void setKeyAndValue(Object inObj, Object outObj) {
         // 得到类对象
         Class userCla = inObj.getClass();
         /* 得到类中的所有属性集合 */

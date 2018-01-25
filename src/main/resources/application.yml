@@ -13,10 +13,16 @@ spring:
 
 # 数据库连接信息配置
   datasource:
-    url: jdbc:oracle:thin:@192.168.0.11:1521:orcl
-    username: ane
-    password: ane
-    driver-class-name: oracle.jdbc.driver.OracleDriver
+    master:
+      url: jdbc:oracle:thin:@192.168.0.11:1521:orcl
+      username: ane
+      password: ane
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+    second:
+      url: jdbc:mysql://192.168.1.166:3306/ane_pda?characterEncoding=utf8
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
      # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
