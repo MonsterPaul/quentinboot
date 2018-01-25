@@ -19,3 +19,12 @@ myapp:
   numberlessthanten: ${random.int(10)}
   # 1024-65536的随机数
   numberinrange: ${random.int[1024,65536]}
+
+ws:
+  url: http://lzq657877648.vicp.cc/services/NE8Service?wsdl
+  nameSpace: http://web.operation.ne.chengfeng.com/
+  bindingName: NE8ServiceServiceSoapBinding
+  method: callNE8LogicToString
+  loginUser: aneAdmin
+  loginPwd: ane654321
+  ip: 192.168.1.8

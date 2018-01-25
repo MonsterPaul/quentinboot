@@ -1,7 +1,6 @@
 package com.quentin.example.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.Collection;
@@ -13,8 +12,8 @@ import java.util.Collection;
  * @Date Created in 11:22 2017/11/13
  * @Version 1.0
  */
+@Slf4j
 public class CloneUtils {
-    private static final Logger logger = LoggerFactory.getLogger(CloneUtils.class);
 
     /**
      * 采用对象的序列化完成对象的深克隆
@@ -40,7 +39,7 @@ public class CloneUtils {
             cloneObj = (T) ois.readObject();
             ois.close();
         } catch (Exception e) {
-            logger.error("[CloneUtils.cloneObject:]", e);
+            log.error("[CloneUtils.cloneObject:]", e);
         }
         return cloneObj;
     }

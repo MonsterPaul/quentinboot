@@ -1,11 +1,10 @@
 package com.quentin.example.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.apache.cxf.service.model.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.xml.namespace.QName;
 import java.beans.IntrospectionException;
@@ -19,8 +18,8 @@ import java.util.List;
  * @Date Created in 11:16 2018/1/4
  * @Version 1.0
  */
+@Slf4j
 public class WebServiceClientUtils {
-    private static Logger logger = LoggerFactory.getLogger(WebServiceClientUtils.class);
 
     /**
      * 执行调用webservice服务
@@ -69,9 +68,9 @@ public class WebServiceClientUtils {
 
             // 调用远程方法并打印结果
             result = client.invoke(opName, orderObject);
-            System.out.println("请求结果：" + result[0]);
+            log.info("请求结果：" + result[0]);
         } catch (Exception e) {
-            logger.error("TestUtils.executeService请求异常：", e);
+            log.error("TestUtils.executeService请求异常：", e);
         }
         return result[0];
     }
@@ -102,11 +101,11 @@ public class WebServiceClientUtils {
                 PropertyDescriptor custProperty = new PropertyDescriptor(f.getName(), outObj.getClass());
                 custProperty.getWriteMethod().invoke(outObj, val);
             } catch (IllegalAccessException e) {
-                logger.error("TestUtils.getKeyAndValue安全权限异常:", e);
+                log.error("TestUtils.getKeyAndValue安全权限异常:", e);
             } catch (IntrospectionException e) {
-                logger.error("TestUtils.getKeyAndValue内省异常:", e);
+                log.error("TestUtils.getKeyAndValue内省异常:", e);
             } catch (InvocationTargetException e) {
-                logger.error("TestUtils.getKeyAndValue目标异常:", e);
+                log.error("TestUtils.getKeyAndValue目标异常:", e);
             }
         }
     }

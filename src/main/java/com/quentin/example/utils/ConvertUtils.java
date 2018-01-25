@@ -1,7 +1,6 @@
 package com.quentin.example.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -20,8 +19,8 @@ import java.util.Map;
  * @Date Created in 11:22 2017/11/13
  * @Version 1.0
  */
+@Slf4j
 public class ConvertUtils {
-    private static final Logger logger = LoggerFactory.getLogger(ConvertUtils.class);
 
     /**
      * 字符串转换为int
@@ -36,7 +35,7 @@ public class ConvertUtils {
         try {
             defaultValue = Integer.parseInt(str);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.strToInt:转换异常:]", e);
+            log.error("[ConvertUtils.strToInt:转换异常:]", e);
         }
         return defaultValue;
     }
@@ -54,7 +53,7 @@ public class ConvertUtils {
         try {
             defaultValue = Long.parseLong(str);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.strToLong:转换异常:]", e);
+            log.error("[ConvertUtils.strToLong:转换异常:]", e);
         }
         return defaultValue;
     }
@@ -72,7 +71,7 @@ public class ConvertUtils {
         try {
             defaultValue = Float.parseFloat(str);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.strToFloat:转换异常:]", e);
+            log.error("[ConvertUtils.strToFloat:转换异常:]", e);
         }
         return defaultValue;
     }
@@ -90,7 +89,7 @@ public class ConvertUtils {
         try {
             defaultValue = Double.parseDouble(str);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.strToDouble:转换异常:]", e);
+            log.error("[ConvertUtils.strToDouble:转换异常:]", e);
         }
         return defaultValue;
     }
@@ -123,7 +122,7 @@ public class ConvertUtils {
         try {
             defaultValue = fmt.parse(str);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.strToDate:转换异常:]", e);
+            log.error("[ConvertUtils.strToDate:转换异常:]", e);
         }
         return defaultValue;
     }
@@ -156,7 +155,7 @@ public class ConvertUtils {
         try {
             defaultValue = sdf.format(date);
         } catch (Exception e) {
-            logger.error("[ConvertUtils.dateToStr:转换异常:]", e);
+            log.error("[ConvertUtils.dateToStr:转换异常:]", e);
         }
         return defaultValue;
     }

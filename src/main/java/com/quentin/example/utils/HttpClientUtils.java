@@ -1,11 +1,15 @@
 package com.quentin.example.utils;
 
 import com.alibaba.druid.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.*;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -17,8 +21,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -38,6 +40,7 @@ import java.util.Map;
  * @Date Created in 14:24 2017/12/27
  * @Version 1.0
  */
+@Slf4j
 public class HttpClientUtils {
     /**
      * HTTP协议
@@ -52,8 +55,6 @@ public class HttpClientUtils {
      * 默认编码格式
      */
     private static final String DEFAULT_CHARSET = "UTF-8";
-
-    private static Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 
     private static CloseableHttpClient httpClient;
 
@@ -146,17 +147,17 @@ public class HttpClientUtils {
                         e.printStackTrace();
                         httpClient = null;
                     }
-                    logger.info("重定向地址：" + newuri);
+                    log.info("重定向地址：" + newuri);
                     return sendGetReq(newuri, null);
                 }
             }
-            logger.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
+            log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, charset);
         } catch (ClientProtocolException e) {
-            logger.error("协议异常,堆栈信息如下", e);
+            log.error("协议异常,堆栈信息如下", e);
         } catch (IOException e) {
-            logger.error("网络异常,堆栈信息如下", e);
+            log.error("网络异常,堆栈信息如下", e);
         } finally {
             // 关闭连接，释放资源
             try {
@@ -194,13 +195,13 @@ public class HttpClientUtils {
             // 提交请求并以指定编码获取返回数据
             HttpResponse httpResponse = httpClient.execute(put);
 
-            logger.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
+            log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, charset);
         } catch (ClientProtocolException e) {
-            logger.error("协议异常,堆栈信息如下", e);
+            log.error("协议异常,堆栈信息如下", e);
         } catch (IOException e) {
-            logger.error("网络异常,堆栈信息如下", e);
+            log.error("网络异常,堆栈信息如下", e);
         } finally {
             // 关闭连接，释放资源
             try {
@@ -231,13 +232,13 @@ public class HttpClientUtils {
         try {
             // 提交请求并以指定编码获取返回数据
             HttpResponse httpResponse = httpClient.execute(del);
-            logger.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
+            log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, charset);
         } catch (ClientProtocolException e) {
-            logger.error("协议异常,堆栈信息如下", e);
+            log.error("协议异常,堆栈信息如下", e);
         } catch (IOException e) {
-            logger.error("网络异常,堆栈信息如下", e);
+            log.error("网络异常,堆栈信息如下", e);
         } finally {
             // 关闭连接，释放资源
             try {
@@ -279,15 +280,15 @@ public class HttpClientUtils {
 
             tryGet(statuscode,httpResponse);
 
-            logger.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
+            log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, charset);
         } catch (UnsupportedEncodingException e) {
-            logger.error("不支持当前参数编码格式[" + charset + "],堆栈信息如下", e);
+            log.error("不支持当前参数编码格式[" + charset + "],堆栈信息如下", e);
         } catch (ClientProtocolException e) {
-            logger.error("协议异常,堆栈信息如下", e);
+            log.error("协议异常,堆栈信息如下", e);
         } catch (IOException e) {
-            logger.error("网络异常,堆栈信息如下", e);
+            log.error("网络异常,堆栈信息如下", e);
         } finally {
             // 关闭连接，释放资源
             try {
@@ -342,21 +343,21 @@ public class HttpClientUtils {
 
             tryGet(statuscode,httpResponse);
 
-            logger.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
+            log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, charset);
         } catch (UnsupportedEncodingException e) {
-            logger.error("不支持当前参数编码格式[" + charset + "],堆栈信息如下", e);
+            log.error("不支持当前参数编码格式[" + charset + "],堆栈信息如下", e);
         } catch (ClientProtocolException e) {
-            logger.error("协议异常,堆栈信息如下", e);
+            log.error("协议异常,堆栈信息如下", e);
         } catch (IOException e) {
-            logger.error("网络异常,堆栈信息如下", e);
+            log.error("网络异常,堆栈信息如下", e);
         } finally {
             // 关闭连接，释放资源
             try {
                 httpClient.close();
             } catch (Exception e) {
-                logger.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
                 httpClient = null;
             }
         }
