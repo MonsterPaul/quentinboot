@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,6 +30,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @Slf4j
+@MapperScan("com.quentin.example.domain.mapper")
 public class DruidDataSourceConfig {
 
     @Value("${mybatis.mapper-locations}")
@@ -62,14 +64,13 @@ public class DruidDataSourceConfig {
         sqlSessionFactoryBean.setDataSource(roundRobinDataSouceProxy());
 
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        // 配置mapper文件位置
+        // 配置mapper.xml文件位置
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources(masterMapperLocations));
-        log.info("-------------数据源名称-----------------" + roundRobinDataSouceProxy().getClass().getName());
         return sqlSessionFactoryBean.getObject();
     }
 
     @Bean(name = "primarySqlSessionTemplate")
-    public SqlSessionTemplate testSqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
+    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
@@ -121,7 +122,7 @@ public class DruidDataSourceConfig {
      * @Date: 2018/1/25 16:11
      * @version 1.0
      */
-    @Bean(name = "secondTransactionManager")
+    @Bean(name = "transactionManager")
     @Primary
     public DataSourceTransactionManager secondTransactionManager() {
         return new DataSourceTransactionManager(roundRobinDataSouceProxy());

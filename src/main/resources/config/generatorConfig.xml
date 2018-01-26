@@ -73,8 +73,8 @@
 
         </javaClientGenerator>
 
-        <table tableName="HS_OPT_EWB"
-               domainObjectName="OptEwbVO"
+        <table tableName="t_basic_site"
+               domainObjectName="BasicSiteVO"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

@@ -19,7 +19,7 @@ spring:
       password: ane
       driver-class-name: oracle.jdbc.driver.OracleDriver
     second:
-      url: jdbc:mysql://192.168.1.166:3306/ane_pda?characterEncoding=utf8
+      url: jdbc:mysql://192.168.1.82:3306/ane_pda?characterEncoding=utf8
       username: root
       password: 123456
       driver-class-name: com.mysql.jdbc.Driver
