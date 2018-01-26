@@ -6,3 +6,6 @@ server:
 #        min-spare-threads: 30
     port: 8088
 #    uri-encoding: utf-8
+#    配置error信息是否包含堆栈信息(ON_TRACE_PARAM、NEVER（默认）、ALWAYS)
+    error:
+      include-stacktrace: NEVER

@@ -10,7 +10,7 @@ public class QuetinbootApplication {
 	public static void main(String[] args) {
 		log.info("I am debug log.");
 		SpringApplication.run(QuetinbootApplication.class, args);
-		log.error("I am debug log.");
-		log.warn("I am debug log.");
+		log.error("I am error log.");
+		log.warn("I am warn log.");
 	}
 }

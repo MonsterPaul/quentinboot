@@ -1,4 +1,4 @@
-package com.quentin.example.exception;
+package com.quentin.example.exception.config;
 
 /**
  * 统一异常处理日志类

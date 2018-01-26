@@ -1,8 +1,8 @@
 package com.quentin.example.web.controller;
 
 import com.quentin.example.domain.OptEwbVO;
-import com.quentin.example.domain.mapper.OptEwbVOMapper;
 import com.quentin.example.exception.MyException;
+import com.quentin.example.service.IEwbService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,13 +29,13 @@ import springfox.documentation.annotations.ApiIgnore;
 public class EwbController {
 
     @Autowired
-    private OptEwbVOMapper optEwbVOMapper;
+    private IEwbService ewbService;
 
     @ApiOperation(value = "获取运单数据", notes = "获取运单数据")
     @ApiImplicitParam(name = "ewbNo", value = "运单号", required = true, dataType = "String" ,paramType = "query")
     @RequestMapping(value = "/getEwb", method = RequestMethod.GET)
     public String getEwbInfo(@RequestParam String ewbNo) {
-        OptEwbVO optEwbVO = optEwbVOMapper.selectByEwbNo(ewbNo);
+        OptEwbVO optEwbVO = ewbService.getEwb(ewbNo);
         if (null != optEwbVO) {
             return optEwbVO.toString();
         }
@@ -49,7 +49,7 @@ public class EwbController {
     })
     @RequestMapping(value = "/showEwb", method = RequestMethod.GET)
     public ModelAndView ewbPage(@RequestParam String ewbNo) {
-        OptEwbVO optEwbVO = optEwbVOMapper.selectByEwbNo(ewbNo);
+        OptEwbVO optEwbVO = ewbService.getEwb(ewbNo);
         ModelAndView modelAndView = new ModelAndView();
         if (null != optEwbVO) {
             modelAndView.addObject("ewb", optEwbVO);
@@ -68,6 +68,13 @@ public class EwbController {
     @RequestMapping("/exception")
     public String showMyException() throws MyException {
         throw new MyException("布吉岛发生了什么异常");
+    }
+
+    @RequestMapping("/nullPointError")
+    public String showPageException() throws NullPointerException {
+        OptEwbVO ewb = null;
+        System.out.println(ewb.getEwbNo());
+        return "ssss";
     }
 
 }
