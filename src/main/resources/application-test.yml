@@ -9,3 +9,17 @@ server:
 #    配置error信息是否包含堆栈信息(ON_TRACE_PARAM、NEVER（默认）、ALWAYS)
     error:
       include-stacktrace: ALWAYS
+
+#jedis-cluster配置
+spring:
+  redis:
+    cluster:
+      nodes: 180.76.246.243:7000,180.76.246.243:7001,180.76.246.243:7002,180.76.246.243:7003,180.76.246.243:7004,180.76.246.243:7005
+      connectionTimeout: 3000
+      soTimeout: 3000
+      maxRedirections: 5
+      pool:
+        maxTotal: 500
+        maxIdle: 50
+        minIdle: 0
+        maxWaitMillis: 3000

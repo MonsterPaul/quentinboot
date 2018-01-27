@@ -31,3 +31,17 @@ ws:
   loginUser: aneAdmin
   loginPwd: ane654321
   ip: 192.168.1.8
+
+#jedis-cluster配置
+spring:
+  redis:
+    cluster:
+      nodes: 180.76.246.243:7000,180.76.246.243:7001,180.76.246.243:7002,180.76.246.243:7003,180.76.246.243:7004,180.76.246.243:7005
+      connectionTimeout: 15000
+      soTimeout: 15000
+      maxRedirections: 5
+      pool:
+        maxTotal: 500
+        maxIdle: 50
+        minIdle: 0
+        maxWaitMillis: 15000
