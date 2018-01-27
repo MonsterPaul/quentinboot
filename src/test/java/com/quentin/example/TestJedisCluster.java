@@ -38,8 +38,8 @@ public class TestJedisCluster {
 
     @Test
     public void getKey() {
-        Map map = (Map) jedisHelperService.getCache(MAP_KEY);
-        log.info("=========获取到信息为========="+null == map.toString() ? "" : map.toString());
+        String name = (String) jedisHelperService.getMapValueCache(MAP_KEY,"name");
+        log.info("=========获取到信息为========="+null == name ? "" : name);
     }
 
 }
