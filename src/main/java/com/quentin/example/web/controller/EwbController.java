@@ -32,7 +32,7 @@ public class EwbController {
     private IEwbService ewbService;
 
     @ApiOperation(value = "获取运单数据", notes = "获取运单数据")
-    @ApiImplicitParam(name = "ewbNo", value = "运单号", required = true, dataType = "String" ,paramType = "query")
+    @ApiImplicitParam(name = "ewbNo", value = "运单号", required = true, dataType = "String" ,paramType = "query")//paramType 有五个可选值 ： path, query, body, header, form
     @RequestMapping(value = "/getEwb", method = RequestMethod.GET)
     public String getEwbInfo(@RequestParam String ewbNo) {
         OptEwbVO optEwbVO = ewbService.getEwb(ewbNo);
@@ -65,12 +65,12 @@ public class EwbController {
         return "ssss12";
     }
 
-    @RequestMapping("/exception")
+    @RequestMapping(value = "/exception",method = RequestMethod.GET)
     public String showMyException() throws MyException {
         throw new MyException("布吉岛发生了什么异常");
     }
 
-    @RequestMapping("/nullPointError")
+    @RequestMapping(value = "/nullPointError",method = RequestMethod.GET)
     public String showPageException() throws NullPointerException {
         OptEwbVO ewb = null;
         System.out.println(ewb.getEwbNo());

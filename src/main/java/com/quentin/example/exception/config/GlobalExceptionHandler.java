@@ -22,15 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    /*@ExceptionHandler(value = Exception.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        mav.addObject("exception", e);
-        mav.addObject("url", req.getRequestURL());
-        mav.setViewName("error/error_nullpoint");
-        return mav;
-    }*/
-
     /**
      * 全局异常处理页面路径
      *
@@ -71,6 +62,15 @@ public class GlobalExceptionHandler {
         r.setUrl(req.getRequestURL().toString());
         return r;
     }
+
+    /*@ExceptionHandler(value = Exception.class)
+    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e);
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName("error/error_nullpoint");
+        return mav;
+    }*/
 
 }
 
