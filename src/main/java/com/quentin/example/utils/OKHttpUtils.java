@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  * @Date Created in 11:22 2017/11/13
  * @Version 1.0
  */
-public class HttpUtils {
+public class OKHttpUtils {
 
     //选择并保持和服务器的一致即可
     private static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
@@ -34,17 +34,17 @@ public class HttpUtils {
      */
     private HashMap<String, Call> callHashMap;
 
-    private HttpUtils() {
+    private OKHttpUtils() {
         initOkHttpFunction();
         callHashMap = new HashMap();
     }
 
-    public static HttpUtils getInstance() {
+    public static OKHttpUtils getInstance() {
         return OkHttpHelper.okhttpUtils;
     }
 
     private static class OkHttpHelper {
-        private static HttpUtils okhttpUtils = new HttpUtils();
+        private static OKHttpUtils okhttpUtils = new OKHttpUtils();
     }
 
     /**

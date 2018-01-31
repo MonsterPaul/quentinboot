@@ -211,7 +211,7 @@ public class TestCxfWebserviceUtils {
         ewbDetail.put("DELIVERY_CHARGE", 14.00D);//送货费
         ewbDetail.put("INSTALLER_CHARGE", 15.00D);//安装费
         ewbDetail.put("REFUND_CHARGE", 13.00D);//返款到付
-        ewbDetail.put("DISPATCH_SMS_FLAG",0);//派件短信通知收件人（0：不通知  1：通知）
+        ewbDetail.put("DISPATCH_SMS_FLAG", 0);//派件短信通知收件人（0：不通知  1：通知）
         ewbDetail.put("FUEL_CHARGE", 12.00D);//燃油费
         ewbDetail.put("PREMIUM_CHARGE", 12.00D);//保费
         ewbDetail.put("FREIGHT_REMARK", "don't know");//运费修改原因
@@ -283,7 +283,7 @@ public class TestCxfWebserviceUtils {
         chargeInfo.put("serviceCharge", 1.00D);
         chargeInfo.put("stairsAmount", 1.00D);//上楼费
         //特殊费用
-        chargeInfo.put("dobCleanCharge",0.0);//清点费
+        chargeInfo.put("dobCleanCharge", 0.0);//清点费
         chargeInfo.put("dobTurnOrAgencyCharge", 0.0);//转退件或代取件费
         chargeInfo.put("dobStoreRoomCharge", 0.0);//进仓服务费
         chargeInfo.put("dobSpecialAreaCharge", 0.0);//特殊区域加收费
@@ -455,17 +455,21 @@ public class TestCxfWebserviceUtils {
         return resultObj.toJSONString();
     }
 
+    /**
+     * 运单接口
+     *
+     * @param
+     * @Author: guoqun.yang
+     * @Date: 2018/1/29 14:20
+     * @version 1.0
+     */
     @Test
     public void cxfWs() {
-        String url = "http://lzq657877648.vicp.cc/services/NE8Service?wsdl";
-        String nameSpace = "http://web.operation.ne.chengfeng.com/";
-        String bindingNameStr = "NE8ServiceServiceSoapBinding";
-        String method = "callNE8LogicToString";
         String str = getParams();
         ServiceBeanMessage serviceBeanMessage = new ServiceBeanMessage();
-        serviceBeanMessage.setLoginUser("aneAdmin");
-        serviceBeanMessage.setLoginPwd("ane654321");
-        serviceBeanMessage.setIp("192.168.1.8");
+        serviceBeanMessage.setLoginUser(wsProperties.getLoginUser());
+        serviceBeanMessage.setLoginPwd(wsProperties.getLoginPwd());
+        serviceBeanMessage.setIp(wsProperties.getIp());
         serviceBeanMessage.setServerCode("200101");
         serviceBeanMessage.setParams("");
         serviceBeanMessage.setStates("1");
@@ -484,17 +488,25 @@ public class TestCxfWebserviceUtils {
         }
         serviceBeanMessage.setScanParams(out.toByteArray());
         //调用WebService
-        WebServiceClientUtils.executeService(url, nameSpace, bindingNameStr, method, serviceBeanMessage);
+        WebServiceClientUtils.executeService(wsProperties.getUrl(), wsProperties.getNameSpace(), wsProperties.getBindingName(), wsProperties.getMethod(), serviceBeanMessage);
     }
 
+    /**
+     * 体积重接口
+     *
+     * @param
+     * @Author: guoqun.yang
+     * @Date: 2018/1/29 14:20
+     * @version 1.0
+     */
     @Test
     public void testVolWeight() {
         JSONObject paramObj = new JSONObject();
-        paramObj.put("date","2018-01-23 09:41:00");
-        paramObj.put("weight","12.0");
-        paramObj.put("sendSiteId","4001");
-        paramObj.put("dispatchSiteId","3662");
-        paramObj.put("vol","23.0");
+        paramObj.put("date", "2018-01-23 09:41:00");
+        paramObj.put("weight", "12.0");
+        paramObj.put("sendSiteId", "4001");
+        paramObj.put("dispatchSiteId", "3662");
+        paramObj.put("vol", "23.0");
         String str = paramObj.toJSONString();
         ServiceBeanMessage serviceBeanMessage = new ServiceBeanMessage();
         serviceBeanMessage.setLoginUser(wsProperties.getLoginUser());
@@ -509,11 +521,5 @@ public class TestCxfWebserviceUtils {
         WebServiceClientUtils.executeService(wsProperties.getUrl(), wsProperties.getNameSpace(), wsProperties.getBindingName(), wsProperties.getMethod(), serviceBeanMessage);
 
     }
-
-    @Test
-    public void testProperties() {
-        log.info(wsProperties.getUrl());
-    }
-
 
 }

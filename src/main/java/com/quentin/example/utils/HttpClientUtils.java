@@ -163,7 +163,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
                 httpClient = null;
             }
         }
@@ -207,7 +207,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
                 httpClient = null;
             }
         }
@@ -244,7 +244,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
                 httpClient = null;
             }
         }
@@ -294,6 +294,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
                 httpClient = null;
             }
         }
@@ -306,7 +307,7 @@ public class HttpClientUtils {
             Header header = httpResponse.getFirstHeader("location");
             if (header != null) {
                 String newuri = header.getValue();
-                if ((newuri == null) || (newuri.equals(""))) {
+                if ((StringUtils.isEmpty(newuri))) {
                     newuri = "/";
                 }
                 return sendGetReq(newuri, null);
