@@ -14,7 +14,7 @@ import java.util.List;
  * @Date Created in 17:05 2018/2/1
  * @Version 1.0
  */
-//@Service
+@Service
 @Slf4j
 public class UserServiceImpl implements IUserService {
 

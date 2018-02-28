@@ -78,6 +78,7 @@ spring:
     expose-spring-macro-helpers: false
     settings:
       template_update_delay: 0
+    request-context-attribute: request
 
 
 

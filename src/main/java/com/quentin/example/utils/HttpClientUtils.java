@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Auth Created by guoqun.yang
+ * @Author Created by guoqun.yang
  * @Date Created in 14:24 2017/12/27
  * @Version 1.0
  */
@@ -59,7 +59,9 @@ public class HttpClientUtils {
     private static CloseableHttpClient httpClient;
 
 
-    //不可实例化
+    /**
+     * 不可实例化
+     */
     private HttpClientUtils() {
         httpClient = HttpClientBuilder.create().build();
     }
@@ -138,7 +140,7 @@ public class HttpClientUtils {
                 Header header = httpResponse.getFirstHeader("location");
                 if (header != null) {
                     String newuri = header.getValue();
-                    if ((newuri == null) || (newuri.equals(""))) {
+                    if ((newuri == null) || ("".equals(newuri))) {
                         newuri = "/";
                     }
                     try {
@@ -376,12 +378,13 @@ public class HttpClientUtils {
         try {
             sslContext = SSLContext.getInstance("SSL");
             final X509TrustManager trustManager = new X509TrustManager() {
+                @Override
                 public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
                 }
-
+                @Override
                 public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
                 }
-
+                @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return null;
                 }
