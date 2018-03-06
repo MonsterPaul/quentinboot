@@ -1,5 +1,7 @@
 package com.quentin.example.service;
 
+import com.quentin.example.config.dynamicsdb.DataSource;
+import com.quentin.example.config.dynamicsdb.DataSourceEnum;
 import com.quentin.example.domain.UserVO;
 
 import java.util.List;
@@ -12,12 +14,13 @@ import java.util.Set;
  * @Date Created in 13:36 2018/2/6
  * @Version 1.0
  */
+@DataSource(name = DataSourceEnum.predb)
 public interface IShiroService {
 
     /**
      * 根据账号信息获取用户
      *
-     * @param map
+     * @param
      * @Author: guoqun.yang
      * @Date: 2018/2/6 13:42
      * @version 1.0

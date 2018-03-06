@@ -17,7 +17,7 @@
         }
     </style>
 </head>
-<body class="layui-layout-body">
+<body class="layui-layout-body" id="login_carousel">
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
     <legend>用户登录</legend>
 </fieldset>
@@ -45,3 +45,68 @@
 </form>
 </body>
 </html>
+
+<script>
+    layui.config({
+        base : "${ctx}/static/js/"
+    }).use(['form','layer','jquery','common','carousel'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            common = layui.common,
+            carousel = layui.carousel;
+
+        /**背景图片轮播*/
+        carousel.render({
+            elem: '#login_carousel',
+            width: '100%',
+            height: '100%',
+            interval:2000,
+            arrow: 'none',
+            anim: 'fade',
+            indicator:'none'
+        });
+
+        /**重新生成验证码*/
+        function reqCaptcha() {
+            var url = "${ctx}/captcha.do?nocache=" + new Date().getTime()
+            $('.code img').attr("src",url)
+        }
+        /**点击验证码重新生成*/
+        $('.code img').on('click', function () {
+            reqCaptcha();
+        });
+
+        /**监听登陆提交*/
+        form.on('submit(login)', function (data) {
+            //弹出loading
+            var loginLoading = top.layer.msg('登陆中，请稍候', {icon: 16, time: false, shade: 0.8});
+            //记录ajax请求返回值
+            var ajaxReturnData;
+
+            //登陆验证
+            $.ajax({
+                url: '${ctx}/loginCheck.do',
+                type: 'post',
+                async: false,
+                data: data.field,
+                success: function (data) {
+                    ajaxReturnData = data;
+                }
+            });
+            //登陆成功
+            if (ajaxReturnData.returnCode == 0000) {
+                window.location.href="${ctx}/main/index.do";
+                top.layer.close(loginLoading);
+                return false;
+            } else {
+                top.layer.close(loginLoading);
+                common.cmsLayErrorMsg(ajaxReturnData.returnMessage);
+                reqCaptcha();
+                return false;
+            }
+        });
+
+        layer.alert('账号:user_system/123456 用户管理员<br>账号:user_readonly/123456 只读用户<br>原admin账号暂时回收');
+    });
+
+</script>

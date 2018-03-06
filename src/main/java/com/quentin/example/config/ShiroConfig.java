@@ -44,7 +44,7 @@ public class ShiroConfig {
      * @Date: 2018/2/7 10:54
      * @version 1.0
      */
-    @Bean
+   @Bean
     public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
