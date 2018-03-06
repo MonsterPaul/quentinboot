@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,17 +37,23 @@ public class DruidDataSourceConfig {
     @Value("${mybatis.mapper-locations}")
     private String masterMapperLocations;
 
+
+    @Value("${spring.datasource.type}")
+    private Class<? extends DataSource> dataSourceType;
+
+    @Bean(name = "masterDataSource", destroyMethod = "close", initMethod="init")
     @ConfigurationProperties(prefix = "spring.datasource.master")
-    @Bean(name = "masterDataSource", destroyMethod = "close", initMethod = "init")
-    @Primary
     public DataSource masterDataSource() {
-        return new DruidDataSource();
+        log.info("--------------------  主库 init ---------------------");
+        return DataSourceBuilder.create().type(dataSourceType).build();
     }
 
-    @ConfigurationProperties(prefix = "spring.datasource.second")
     @Bean(name = "secondDataSource", destroyMethod = "close", initMethod = "init")
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource.second")
     public DataSource secondDataSource() {
-        return new DruidDataSource();
+        log.info("-------------------- 从库 init ---------------------");
+        return DataSourceBuilder.create().type(dataSourceType).build();
     }
 
     /**
