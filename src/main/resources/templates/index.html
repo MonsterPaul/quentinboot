@@ -48,7 +48,7 @@
 
 <script>
     layui.config({
-        base : "${ctx}/static/js/"
+        base : "${request.contextPath}/static/js/"
     }).use(['form','layer','jquery','common','carousel'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -68,7 +68,7 @@
 
         /**重新生成验证码*/
         function reqCaptcha() {
-            var url = "${ctx}/captcha.do?nocache=" + new Date().getTime()
+            var url = "${request.contextPath}/captcha.do?nocache=" + new Date().getTime()
             $('.code img').attr("src",url)
         }
         /**点击验证码重新生成*/
@@ -85,7 +85,7 @@
 
             //登陆验证
             $.ajax({
-                url: '${ctx}/loginCheck.do',
+                url: '${request.contextPath}/loginCheck.do',
                 type: 'post',
                 async: false,
                 data: data.field,
@@ -95,7 +95,7 @@
             });
             //登陆成功
             if (ajaxReturnData.returnCode == 0000) {
-                window.location.href="${ctx}/main/index.do";
+                window.location.href="${request.contextPath}/main/index.do";
                 top.layer.close(loginLoading);
                 return false;
             } else {

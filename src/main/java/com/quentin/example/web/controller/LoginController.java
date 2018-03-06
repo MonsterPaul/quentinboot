@@ -1,22 +1,20 @@
 package com.quentin.example.web.controller;
 
+import com.google.common.collect.Maps;
 import com.quentin.example.common.BussinessCode;
+import com.quentin.example.common.Constants;
 import com.quentin.example.domain.BussinessMsg;
 import com.quentin.example.utils.BussinessMsgUtil;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import com.quentin.example.utils.CaptchaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,9 +22,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Map;
 
 /**
+ * 登录控制器
+ *
  * @Auth Created by guoqun.yang
  * @Date Created in 10:42 2018/2/8
  * @Version 1.0
@@ -41,6 +46,12 @@ public class LoginController extends BasicContrller {
         return modelAndView;
     }
 
+    @RequestMapping("/loginPage")
+    ModelAndView loginPage() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        return modelAndView;
+    }
+
     @RequestMapping("/main")
     ModelAndView mainIndex() {
         ModelAndView modelAndView = new ModelAndView("main_index");
@@ -48,9 +59,11 @@ public class LoginController extends BasicContrller {
     }
 
     @PostMapping(value = "/login")
+    @ResponseBody
     public BussinessMsg login(String username, String password, HttpServletRequest request) {
         long start = System.currentTimeMillis();
         password = new SimpleHash("md5", password, ByteSource.Util.bytes(username + "1qazxsw2"), 2).toHex();
+        Map<String,Object> map = Maps.newHashMap();
         //1.用户名不能为空
         if (StringUtils.isEmpty(username)) {
             log.info("登陆验证失败,原因:用户名不能为空");
@@ -68,7 +81,8 @@ public class LoginController extends BasicContrller {
 
             if (subject.isAuthenticated()) {
                 request.getSession().setAttribute("LOGIN_NAME", getCurrentUser());
-                return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_SUCCESS);
+                map.put("url","main");
+                return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_SUCCESS,map);
             }
             return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_LOGIN_FAIL);
         } catch (IncorrectCredentialsException ice) {
@@ -83,5 +97,33 @@ public class LoginController extends BasicContrller {
         } finally {
             log.info("登陆验证处理结束,用时" + (System.currentTimeMillis() - start) + "毫秒");
         }
+    }
+
+
+    /**
+     * 获取验证码图片和文本(验证码文本会保存在HttpSession中)
+     *
+     * @param request
+     * @param response
+     * @Author: guoqun.yang
+     * @Date: 2018/3/6 20:56
+     * @version 1.0
+     */
+    @GetMapping("/genCaptcha")
+    public void genCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        //设置页面不缓存
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        Object[] obj = CaptchaUtils.getCaptchaImage(150, 50, 35, 50, 500, true, true, CaptchaUtils.ComplexLevel.MEDIUM);
+        log.info("本次生成的验证码为[" + obj[1] + "],已存放到HttpSession中");
+
+        //将验证码放到HttpSession里面
+        request.getSession().setAttribute(Constants.VALIDATE_CODE, obj[1]);
+        //设置输出的内容的类型为JPEG图像
+        response.setContentType("image/jpeg");
+        //写给浏览器
+        ImageIO.write((BufferedImage) obj[0], "JPEG", response.getOutputStream());
     }
 }

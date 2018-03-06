@@ -126,13 +126,13 @@ public class CaptchaUtils {
 
         return object;
     }
-    /*测试代码
-    public static void main(String[] args) throws IOException, InterruptedException {
+    //测试代码
+    /*public static void main(String[] args) throws IOException, InterruptedException {
 		for(int i=0;i<10;i++){
 			Object[] obj=getCaptchaImage(150, 50, 35, 50, 500, true,true, ComplexLevel.MEDIUM);
 			System.out.println("验证码"+obj[1]);
-			new File("C:\\test").mkdir();
-			ImageIO.write((BufferedImage)obj[0],"jpg",new File("C:\\test\\"+System.currentTimeMillis()+".jpg"));
+			new File("E:\\").mkdir();
+			ImageIO.write((BufferedImage)obj[0],"jpg",new File("E:\\"+System.currentTimeMillis()+".jpg"));
 			Thread.sleep(500L);
 		}
 	}*/
