@@ -6,6 +6,7 @@ import com.quentin.example.common.Constants;
 import com.quentin.example.domain.BussinessMsg;
 import com.quentin.example.utils.BussinessMsgUtil;
 import com.quentin.example.utils.CaptchaUtils;
+import com.quentin.example.utils.MD5Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -62,7 +63,7 @@ public class LoginController extends BasicContrller {
     @ResponseBody
     public BussinessMsg login(String username, String password, HttpServletRequest request) {
         long start = System.currentTimeMillis();
-        password = new SimpleHash("md5", password, ByteSource.Util.bytes(username + "1qazxsw2"), 2).toHex();
+        password = MD5Utils.encrypt(username,password);
         Map<String,Object> map = Maps.newHashMap();
         //1.用户名不能为空
         if (StringUtils.isEmpty(username)) {

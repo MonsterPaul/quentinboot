@@ -112,7 +112,7 @@ public class ShiroConfig {
     @Bean
     MyShiroRealm userRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
-        myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        //myShiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
         return myShiroRealm;
     }
 

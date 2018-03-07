@@ -72,7 +72,7 @@
             $.post(data.form.action, data.field, function (res) {
                 layer.close(loadIndex);
                 if (res.returnCode == "0000") {
-                    location.href = "${request.contextPath}/" + res.data.url;
+                    location.href = "${request.contextPath}/" + res.returnData.url;
                 } else {
                     layer.msg(res.returnMessage);
                     $("#mycode").click();

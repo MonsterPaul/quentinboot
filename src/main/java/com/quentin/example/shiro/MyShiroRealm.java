@@ -9,6 +9,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 
 import java.util.List;
 import java.util.Set;
@@ -76,7 +77,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(username,password,getName());
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(ListUser.get(0),password.toCharArray(),getName());
         return simpleAuthenticationInfo;
     }
 }

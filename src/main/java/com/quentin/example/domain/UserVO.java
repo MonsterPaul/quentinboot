@@ -1,8 +1,10 @@
 package com.quentin.example.domain;
 
+import com.google.common.collect.Sets;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 public class UserVO {
@@ -157,5 +159,9 @@ public class UserVO {
      * @mbggenerated
      */
     private String district;
+
+    private Set<RoleVO> roleLists = Sets.newHashSet();
+
+    private Set<MenuVO> menus = Sets.newHashSet();
 
 }
