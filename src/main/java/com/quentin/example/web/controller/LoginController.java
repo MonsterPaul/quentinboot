@@ -61,7 +61,7 @@ public class LoginController extends BasicContrller {
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public BussinessMsg login(String username, String password, HttpServletRequest request) {
+    public BussinessMsg login(String username, String password,String code, HttpServletRequest request) {
         long start = System.currentTimeMillis();
         password = MD5Utils.encrypt(username,password);
         Map<String,Object> map = Maps.newHashMap();
@@ -74,6 +74,17 @@ public class LoginController extends BasicContrller {
         if (StringUtils.isEmpty(password)) {
             log.info("登陆验证失败,原因:密码不能为空");
             return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_LOGIN_PASS_NULL);
+        }
+        //3.验证码不能为空
+        if (StringUtils.isEmpty(code)) {
+            log.info("登陆验证失败,原因:验证码不能为空");
+            return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_CAPTCHA_NULL);
+        }
+        //4.验证码输入错误
+        String sessionCode = (String) request.getSession().getAttribute(Constants.VALIDATE_CODE);
+        if(!code.toLowerCase().equals(sessionCode.toLowerCase())) {
+            log.info("登陆验证失败,原因:验证码错误：code:"+code+",sessionCode:"+sessionCode);
+            return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_CAPTCHA_ERROR);
         }
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);

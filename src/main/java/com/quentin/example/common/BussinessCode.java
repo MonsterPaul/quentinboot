@@ -16,6 +16,8 @@ public enum BussinessCode {
     GLOBAL_LOGIN_NAME_NULL("0501", "用户名不能为空"),
     GLOBAL_LOGIN_PASS_NULL("0502", "密码不能为空"),
     GLOBAL_LOGIN_FAIL("0503", "用户名或密码不匹配"),
+    GLOBAL_CAPTCHA_NULL("0505","验证码不能为空"),
+    GLOBAL_CAPTCHA_ERROR("0506","验证码输入错误"),
     GLOBAL_LOGIN_ERROR("0504", "系统登录异常");
 
     private String code;
