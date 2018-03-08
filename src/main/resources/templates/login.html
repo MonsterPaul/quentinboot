@@ -18,7 +18,8 @@
 <body>
 <video class="video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920"
        height="1080" width="1920">
-    <source src="https://static.mysiteforme.com/login.mp4" type="video/mp4">
+    <!--<source src="https://static.mysiteforme.com/login.mp4" type="video/mp4">-->
+    <source src="${request.contextPath}/video/coldplay.mp4" type="video/mp4">
 </video>
 <div class="video_mask"></div>
 <div class="login">
@@ -44,7 +45,7 @@
     </form>
 </div>
 <div class="loginTip">
-    <span>用户名:admin &nbsp;&nbsp;&nbsp;密码:123456</span>
+    <span>用户名:admin &nbsp;&nbsp;&nbsp;密码:admin123456</span>
 </div>
 <script type="text/javascript" src="${request.contextPath}/layui/layui.js"></script>
 <script>
