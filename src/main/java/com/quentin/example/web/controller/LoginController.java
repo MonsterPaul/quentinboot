@@ -43,7 +43,7 @@ public class LoginController extends BasicContrller {
 
     @RequestMapping("/")
     ModelAndView index() {
-        ModelAndView modelAndView = new ModelAndView("index");
+        ModelAndView modelAndView = new ModelAndView("login");
         return modelAndView;
     }
 
@@ -53,18 +53,24 @@ public class LoginController extends BasicContrller {
         return modelAndView;
     }
 
+    @RequestMapping("/home")
+    ModelAndView home() {
+        ModelAndView modelAndView = new ModelAndView("index");
+        return modelAndView;
+    }
+
     @RequestMapping("/main")
     ModelAndView mainIndex() {
-        ModelAndView modelAndView = new ModelAndView("main_index");
+        ModelAndView modelAndView = new ModelAndView("main");
         return modelAndView;
     }
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public BussinessMsg login(String username, String password,String code, HttpServletRequest request) {
+    public BussinessMsg login(String username, String password, String code, HttpServletRequest request) {
         long start = System.currentTimeMillis();
-        password = MD5Utils.encrypt(username,password);
-        Map<String,Object> map = Maps.newHashMap();
+        password = MD5Utils.encrypt(username, password);
+        Map<String, Object> map = Maps.newHashMap();
         //1.用户名不能为空
         if (StringUtils.isEmpty(username)) {
             log.info("登陆验证失败,原因:用户名不能为空");
@@ -82,8 +88,8 @@ public class LoginController extends BasicContrller {
         }
         //4.验证码输入错误
         String sessionCode = (String) request.getSession().getAttribute(Constants.VALIDATE_CODE);
-        if(!code.toLowerCase().equals(sessionCode.toLowerCase())) {
-            log.info("登陆验证失败,原因:验证码错误：code:"+code+",sessionCode:"+sessionCode);
+        if (!code.toLowerCase().equals(sessionCode.toLowerCase())) {
+            log.info("登陆验证失败,原因:验证码错误：code:" + code + ",sessionCode:" + sessionCode);
             return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_CAPTCHA_ERROR);
         }
         try {
@@ -93,8 +99,8 @@ public class LoginController extends BasicContrller {
 
             if (subject.isAuthenticated()) {
                 request.getSession().setAttribute("LOGIN_NAME", getCurrentUser());
-                map.put("url","main");
-                return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_SUCCESS,map);
+                map.put("url", "home");
+                return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_SUCCESS, map);
             }
             return BussinessMsgUtil.returnCodeMessage(BussinessCode.GLOBAL_LOGIN_FAIL);
         } catch (IncorrectCredentialsException ice) {
@@ -109,6 +115,20 @@ public class LoginController extends BasicContrller {
         } finally {
             log.info("登陆验证处理结束,用时" + (System.currentTimeMillis() - start) + "毫秒");
         }
+    }
+
+    /**
+     * 退出系统
+     *
+     * @param
+     * @Author: guoqun.yang
+     * @Date: 2018/3/8 19:41
+     * @version 1.0
+     */
+    @GetMapping("/logout")
+    public String logOut() {
+        SecurityUtils.getSubject().logout();
+        return "redirect:/login";
     }
 
 
