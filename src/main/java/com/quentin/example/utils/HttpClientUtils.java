@@ -1,15 +1,13 @@
 package com.quentin.example.utils;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.*;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -334,7 +332,12 @@ public class HttpClientUtils {
         RequestConfig reqConf = RequestConfig.DEFAULT;
         HttpPost httpPost = new HttpPost(url);
         try {
-            httpPost.setEntity(new StringEntity(content, charset));
+            // 解决中文乱码问题
+            StringEntity paramEntity = new StringEntity(content, DEFAULT_CHARSET);
+            paramEntity.setContentEncoding(DEFAULT_CHARSET);
+            paramEntity.setContentType("application/json");
+            httpPost.setEntity(paramEntity);
+
             // 对HTTPS请求进行处理
             if (url.toLowerCase().startsWith(HTTPS_PROTOCOL)) {
                 initSSL(httpClient, getPort(url));
@@ -347,8 +350,9 @@ public class HttpClientUtils {
             tryGet(statuscode,httpResponse);
 
             log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
-            HttpEntity entity = httpResponse.getEntity();
-            return EntityUtils.toString(entity, charset);
+
+            JSONObject resultObj = getJsonResult(httpResponse, url);
+            return resultObj.toJSONString();
         } catch (UnsupportedEncodingException e) {
             log.error("不支持当前参数编码格式[" + charset + "],堆栈信息如下", e);
         } catch (ClientProtocolException e) {
@@ -365,6 +369,33 @@ public class HttpClientUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取响应
+     *
+     * @param result     响应对象
+     * @param url        请求地址
+     * @Author: guoqun.yang
+     * @Date: 2018/1/15 16:50
+     * @version 1.0
+     */
+    private static JSONObject getJsonResult(HttpResponse result, String url) {
+        JSONObject jsonResult = null;
+        if (result.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String str;
+            try {
+                // 读取服务器返回过来的json字符串数据
+                str = EntityUtils.toString(result.getEntity(), "utf-8");
+                // 把json字符串转换成json对象
+                jsonResult = JSONObject.parseObject(str);
+
+                log.info(jsonResult.toString());
+            } catch (Exception e) {
+                log.error("PushHttpClientUtils.getJsonResult:post请求提交失败:" + url, e);
+            }
+        }
+        return jsonResult;
     }
 
     /**
