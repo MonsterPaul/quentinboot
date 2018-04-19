@@ -14,8 +14,8 @@ import java.net.UnknownHostException;
 @Slf4j
 public class QuetinbootApplication {
 	public static void main(String[] args) throws UnknownHostException {
-		long startTime = System.currentTimeMillis();//获取当前时间
-		//SpringApplication.run(QuetinbootApplication.class, args);
+		//获取当前时间
+		long startTime = System.currentTimeMillis();
 
 		SpringApplication app = new SpringApplication(QuetinbootApplication.class);
 		Environment env = app.run(args).getEnvironment();

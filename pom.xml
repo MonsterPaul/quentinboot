@@ -23,8 +23,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <!--ojdbc6 -->
-        <com.oracle.ojdbc6.version>11.2.0.4.0-atlassian-hosted</com.oracle.ojdbc6.version>
         <!--swagger2-->
         <swagger2>2.6.1</swagger2>
         <!--cxf-->
@@ -110,13 +108,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!--ojdbc-->
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc6</artifactId>
-            <version>${com.oracle.ojdbc6.version}</version>
-        </dependency>
-
         <!-- 引入log4j2依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -199,6 +190,12 @@
             <version>${httpclient}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.5.3</version>
+        </dependency>
+
         <!--okhttp-->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -235,6 +232,7 @@
     </dependencies>
 
     <build>
+        <finalName>quentinboot</finalName>
         <plugins>
             <!--maven插件-->
             <plugin>
@@ -246,6 +244,59 @@
 
                     <fork>true</fork>
                 </configuration>
+            </plugin>
+
+            <!-- 跳过单元测试 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!--maven打jar插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <archive>
+                        <!-- 添加index则不从mainfest中读取classpath，而是从Index.list中读取 -->
+                        <manifest>
+                            <mainClass>com.quentin.example.QuetinbootApplication</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <excludes>
+                        <exclude>config/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!--maven自定义打包插件-->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <!-- not append assembly id in release file name -->
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/build/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!--mybatis-generator-->
