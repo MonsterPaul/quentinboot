@@ -39,7 +39,6 @@ public class EwbController {
         if (null != optEwbVO) {
             return optEwbVO.toString();
         }
-        System.out.println("adasfasdf");
         return "";
     }
 
@@ -70,11 +69,5 @@ public class EwbController {
         throw new MyException("布吉岛发生了什么异常");
     }
 
-    @RequestMapping(value = "/nullPointError",method = RequestMethod.GET)
-    public String showPageException() throws NullPointerException {
-        OptEwbVO ewb = null;
-        System.out.println(ewb.getEwbNo());
-        return "ssss";
-    }
 
 }

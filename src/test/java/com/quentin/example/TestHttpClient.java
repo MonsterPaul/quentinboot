@@ -50,61 +50,32 @@ public class TestHttpClient {
         paramsMap.put("piece",62L);
         paramsMap.put("weight",62D);
         paramsMap.put("calcWeight",46546D);
+        paramsMap.put("remark","测试一下");
+        paramsMap.put("packageType","我");
+        paramsMap.put("goodsName","测试我");
 
-        JSONObject paramsMap1 = new JSONObject();
-        paramsMap1.put("ewbNo","300121234");
-        paramsMap1.put("operationId","122222222222");
-        paramsMap1.put("ewbDate","2017-08-01 00:00:00");
-        paramsMap1.put("sendCustomerId",2L);
-        paramsMap1.put("sendCustomerAddressId",5L);
-        paramsMap1.put("receiveCustomerId",41L);
-        paramsMap1.put("receiveCustomerAddressId",62L);
-        paramsMap1.put("piece",62L);
-        paramsMap1.put("weight",62D);
-        paramsMap1.put("calcWeight",462546D);
-
-        JSONArray paramsArray = new JSONArray();
-        paramsArray.add(paramsMap);
-        paramsArray.add(paramsMap1);
-
-        JSONObject x = new JSONObject();
-        x.put("ewbNo","123654");
-        x.put("otherCharge",555555d);
-
-        JSONObject y = new JSONObject();
-        y.put("ewbNo","4444444");
-        y.put("otherCharge",3333333d);
+        Map<String, Object> m2 = Maps.newHashMap();
+        m2.put("ewbsListNo", "43312114504044");
+        m2.put("preSiteId", 23L);
+        m2.put("preSiteName", "湘西吉首");
 
         JSONArray array = new JSONArray();
-        array.add(x);
-        array.add(y);
-
-        JSONObject transfer = new JSONObject();
-        transfer.put("messageType","ewb");
-        transfer.put("data",paramsArray);
-
-        JSONObject transfer1 = new JSONObject();
-        transfer1.put("messageType","ewbDetail");
-        transfer1.put("data",array);
-
-        JSONArray transferArray = new JSONArray();
-        transferArray.add(transfer);
-        transferArray.add(transfer1);
+        array.add(m2);
 
 
-
-        JSONObject httpParams = new JSONObject();
-        httpParams.put("event","add");
-        httpParams.put("object",transferArray.toJSONString());
 
         //验证签名摘要
-        String digest = DigestUtils.md5Hex(transferArray.toJSONString() + "waybillcenter" + "waybillcenter123456");
+        String digest = DigestUtils.md5Hex(paramsMap.toJSONString() + "waybillcenter" + "waybillcenter123456");
 
+        JSONObject httpParams = new JSONObject();
         httpParams.put("sign",digest);
+        httpParams.put("object",array.toJSONString());
+        httpParams.put("event","I");
+        httpParams.put("type","ewbslist");
 
         System.out.println(httpParams.toString());
 
-        String url = "http://192.168.1.127:8086/api/getTransferMsg";
+        String url = "http://192.168.0.227:8088/api/getTransferMsg";
         HttpClientUtils.getInstance().sendPost(url, httpParams.toJSONString(),"utf-8");
     }
 

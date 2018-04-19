@@ -24,7 +24,7 @@ myapp:
   numberinrange: ${random.int[1024,65536]}
 
 ws:
-  url: http://lzq657877648.vicp.cc/services/NE8Service?wsdl
+  url: http://192.168.1.127:8085/services/NE8Service?wsdl
   nameSpace: http://web.operation.ne.chengfeng.com/
   bindingName: NE8ServiceServiceSoapBinding
   method: callNE8LogicToString
