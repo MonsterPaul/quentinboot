@@ -1,6 +1,5 @@
 package com.quentin.example.config.dynamicsdb;
 
-import com.alibaba.druid.pool.DruidDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -42,6 +41,7 @@ public class DruidDataSourceConfig {
     private Class<? extends DataSource> dataSourceType;
 
     @Bean(name = "masterDataSource", destroyMethod = "close", initMethod="init")
+    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.master")
     public DataSource masterDataSource() {
         log.info("--------------------  主库 init ---------------------");
@@ -49,7 +49,6 @@ public class DruidDataSourceConfig {
     }
 
     @Bean(name = "secondDataSource", destroyMethod = "close", initMethod = "init")
-    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.second")
     public DataSource secondDataSource() {
         log.info("-------------------- 从库 init ---------------------");
@@ -114,7 +113,8 @@ public class DruidDataSourceConfig {
         for (DataSourceEnum type : dataSources().keySet()) {
             targetDataSources.put(type, dataSources().get(type));
         }
-        proxy.setDefaultTargetDataSource(masterDataSource());//默认lb库
+        //默认lb库
+        proxy.setDefaultTargetDataSource(masterDataSource());
 
         proxy.setTargetDataSources(targetDataSources);
         return proxy;
