@@ -74,15 +74,15 @@
 
         </javaClientGenerator>
 
-        <table tableName="sys_menu" domainObjectName="MenuVO" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="resources" domainObjectName="ResourcesVO" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sys_role" domainObjectName="RoleVO" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="role" domainObjectName="RoleVO" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sys_role_menu" domainObjectName="RoleMenuVO" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="role_resources" domainObjectName="RoleResourcesVO" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sys_user" domainObjectName="UserVO" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="user" domainObjectName="UserVO" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="sys_user_role" domainObjectName="UserRoleVO" enableCountByExample="false" enableUpdateByExample="false"
+        <table tableName="user_role" domainObjectName="UserRoleVO" enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
 
     </context>

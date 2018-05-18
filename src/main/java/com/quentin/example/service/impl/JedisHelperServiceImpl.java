@@ -21,7 +21,7 @@ import java.util.Map;
  * Description:
  */
 @Service
-public class JedisHelperService implements IJedisHelperService {
+public class JedisHelperServiceImpl implements IJedisHelperService {
 
     private static final String JEDIS_SET_RETURN_OK = "OK";
 

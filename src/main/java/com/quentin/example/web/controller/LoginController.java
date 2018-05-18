@@ -128,7 +128,7 @@ public class LoginController extends BasicContrller {
     @GetMapping("/logout")
     public String logOut() {
         SecurityUtils.getSubject().logout();
-        return "redirect:/login";
+        return "loginPage";
     }
 
 
@@ -148,7 +148,7 @@ public class LoginController extends BasicContrller {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
 
-        Object[] obj = CaptchaUtils.getCaptchaImage(150, 50, 35, 50, 500, true, true, CaptchaUtils.ComplexLevel.MEDIUM);
+        Object[] obj = CaptchaUtils.getCaptchaImage(150, 50, 35, 20, 200, true, true, CaptchaUtils.ComplexLevel.MEDIUM);
         log.info("本次生成的验证码为[" + obj[1] + "],已存放到HttpSession中");
 
         //将验证码放到HttpSession里面

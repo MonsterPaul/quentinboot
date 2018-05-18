@@ -1,5 +1,6 @@
 package com.quentin.example.config;
 
+import com.quentin.example.service.IShiroService;
 import com.quentin.example.shiro.MyShiroRealm;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -9,6 +10,7 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 
 /**
@@ -44,7 +46,7 @@ public class ShiroConfig {
      * @Date: 2018/2/7 10:54
      * @version 1.0
      */
-   @Bean
+    @Bean
     public ShiroFilterFactoryBean shiroFilter(DefaultWebSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -54,37 +56,8 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSuccessUrl("/mian");
         //没有权限跳转的url
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-
-        /**
-         * 配置shiro拦截器链
-         * anon  不需要认证
-         * authc 需要认证
-         * user  验证通过或RememberMe登录的都可以
-         * 当应用开启了rememberMe时,用户下次访问时可以是一个user,但不会是authc,因为authc是需要重新认证的
-         *
-         * 顺序从上到下,优先级依次降低,不能颠倒
-         *
-         */
-        LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        filterChainDefinitionMap.put("/css/**", "anon");
-        filterChainDefinitionMap.put("/video/**", "anon");
-        filterChainDefinitionMap.put("/scss/**", "anon");
-        filterChainDefinitionMap.put("/layui/**", "anon");
-        filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/templates/index.html", "anon");
-        filterChainDefinitionMap.put("/js/**", "anon");
-        filterChainDefinitionMap.put("/fonts/**", "anon");
-        filterChainDefinitionMap.put("/img/**", "anon");
-        filterChainDefinitionMap.put("/docs/**", "anon");
-        filterChainDefinitionMap.put("/druid/**", "anon");
-        filterChainDefinitionMap.put("/upload/**", "anon");
-        filterChainDefinitionMap.put("/files/**", "anon");
-        filterChainDefinitionMap.put("/genCaptcha", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/logout", "logout");
-        filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/**", "authc");
-        shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+        //配置shiro拦截器链
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(getFilterChainDefinitions());
         return shiroFilterFactoryBean;
     }
 
@@ -144,11 +117,50 @@ public class ShiroConfig {
     public HashedCredentialsMatcher hashedCredentialsMatcher() {
         HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
 
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");//散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
+        //散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        //散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(2);
 
         return hashedCredentialsMatcher;
     }
 
+
+    /**
+     * 配置shiro拦截器链
+     * anon  不需要认证
+     * authc 需要认证
+     * user  验证通过或RememberMe登录的都可以
+     * 当应用开启了rememberMe时,用户下次访问时可以是一个user,但不会是authc,因为authc是需要重新认证的
+     * 顺序从上到下,优先级依次降低,不能颠倒
+     *
+     * @param
+     * @return java.util.LinkedHashMap<java.lang.String   ,   java.lang.String>
+     * @author guoqun.yang
+     * @date 2018/4/25 23:06
+     * @version 1.0
+     */
+    public static LinkedHashMap<String, String> getFilterChainDefinitions() {
+        LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
+        filterChainDefinitionMap.put("/css/**", "anon");
+        filterChainDefinitionMap.put("/video/**", "anon");
+        filterChainDefinitionMap.put("/scss/**", "anon");
+        filterChainDefinitionMap.put("/layui/**", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
+        filterChainDefinitionMap.put("/templates/index.html", "anon");
+        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/fonts/**", "anon");
+        filterChainDefinitionMap.put("/img/**", "anon");
+        filterChainDefinitionMap.put("/docs/**", "anon");
+        filterChainDefinitionMap.put("/druid/**", "anon");
+        filterChainDefinitionMap.put("/upload/**", "anon");
+        filterChainDefinitionMap.put("/files/**", "anon");
+        filterChainDefinitionMap.put("/genCaptcha", "anon");
+        filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/", "anon");
+        filterChainDefinitionMap.put("/**", "authc");
+        return filterChainDefinitionMap;
+    }
 
 }

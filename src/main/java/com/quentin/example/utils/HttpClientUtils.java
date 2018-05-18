@@ -163,7 +163,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下", e);
                 httpClient = null;
             }
         }
@@ -207,7 +207,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下", e);
                 httpClient = null;
             }
         }
@@ -244,7 +244,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下", e);
                 httpClient = null;
             }
         }
@@ -265,6 +265,8 @@ public class HttpClientUtils {
         }
         RequestConfig reqConf = RequestConfig.DEFAULT;
         HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("busAccount", "4403180501225");
+        httpPost.setHeader("sercertkey", "c6f5e8c7250c961548fd09dfe4ae105b");
         // 封装请求参数
         List<NameValuePair> pairs = map2HttpEntity(params);
         try {
@@ -275,10 +277,11 @@ public class HttpClientUtils {
             }
             // 提交请求并以指定编码获取返回数据
             httpPost.setConfig(reqConf);
+
             HttpResponse httpResponse = httpClient.execute(httpPost);
             int statuscode = httpResponse.getStatusLine().getStatusCode();
 
-            tryGet(statuscode,httpResponse);
+            tryGet(statuscode, httpResponse);
 
             log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
             HttpEntity entity = httpResponse.getEntity();
@@ -294,14 +297,14 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下", e);
                 httpClient = null;
             }
         }
         return null;
     }
 
-    public static String tryGet(int statuscode,HttpResponse httpResponse) {
+    public static String tryGet(int statuscode, HttpResponse httpResponse) {
         if ((statuscode == HttpStatus.SC_MOVED_TEMPORARILY) || (statuscode == HttpStatus.SC_MOVED_PERMANENTLY)
                 || (statuscode == HttpStatus.SC_SEE_OTHER) || (statuscode == HttpStatus.SC_TEMPORARY_REDIRECT)) {
             Header header = httpResponse.getFirstHeader("location");
@@ -347,7 +350,7 @@ public class HttpClientUtils {
             HttpResponse httpResponse = httpClient.execute(httpPost);
             int statuscode = httpResponse.getStatusLine().getStatusCode();
 
-            tryGet(statuscode,httpResponse);
+            tryGet(statuscode, httpResponse);
 
             log.info("请求地址：" + url + "；响应状态：" + httpResponse.getStatusLine());
 
@@ -364,7 +367,7 @@ public class HttpClientUtils {
             try {
                 httpClient.close();
             } catch (Exception e) {
-                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下",e);
+                log.error("关闭连接异常：HttpClientUtils.sendPost,堆栈信息如下", e);
                 httpClient = null;
             }
         }
@@ -374,8 +377,8 @@ public class HttpClientUtils {
     /**
      * 获取响应
      *
-     * @param result     响应对象
-     * @param url        请求地址
+     * @param result 响应对象
+     * @param url    请求地址
      * @Author: guoqun.yang
      * @Date: 2018/1/15 16:50
      * @version 1.0
@@ -412,9 +415,11 @@ public class HttpClientUtils {
                 @Override
                 public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
                 }
+
                 @Override
                 public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
                 }
+
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return null;

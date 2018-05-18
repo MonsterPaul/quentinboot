@@ -4,15 +4,22 @@ layui.config({
 }).extend({
 	"bodyTab" : "bodyTab"
 })
-layui.use(['bodyTab','form','element','layer','jquery'],function(){
+layui.use(['bodyTab','form','element','common','layer','jquery'],function(){
 	var form = layui.form,
-		element = layui.element;
+		element = layui.element,
+		common = layui.common;
 		$ = layui.$;
     	layer = parent.layer === undefined ? layui.layer : top.layer;
 		tab = layui.bodyTab({
 			openTabNum : "50",  //最大可打开窗口数量
 			url : "json/navs.json" //获取菜单json地址
 		});
+
+	//退出
+	$('#logout').on('click', function () {
+		var url = '/logout';
+		common.logOut('退出登陆提示！', '你真的确定要退出系统吗？', url)
+	})
 
 	//通过顶部菜单获取左侧二三级菜单   注：此处只做演示之用，实际开发中通过接口传参的方式获取导航数据
 	function getData(json){

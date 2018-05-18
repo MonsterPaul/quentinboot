@@ -26,10 +26,7 @@ public class TestUser{
     private IUserService userService;
     @Test
     public void testQueryUserByName() {
-        List<UserVO> list = userService.queryUserByName("admin");
-        list.forEach(userVO->{
-            System.out.println(userVO.getName());
-            System.out.println(userVO.getPassword());
-        });
+        UserVO userVO = (UserVO) userService.queryUserByName("admin");
+        System.out.println(userVO.getUserName());
     }
 }

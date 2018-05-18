@@ -1,6 +1,9 @@
 package com.quentin.example.shiro;
 
+import com.google.common.collect.Maps;
+import com.quentin.example.domain.ResourcesVO;
 import com.quentin.example.domain.UserVO;
+import com.quentin.example.service.IResourcesService;
 import com.quentin.example.service.IShiroService;
 import com.quentin.example.utils.SpringContextHolder;
 import org.apache.shiro.SecurityUtils;
@@ -9,9 +12,11 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 
+import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,6 +28,9 @@ import java.util.Set;
  */
 public class MyShiroRealm extends AuthorizingRealm {
 
+    @Resource
+    private IResourcesService resourcesService;
+
     /**
      * 权限验证
      *
@@ -33,16 +41,21 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        //获取userId
-        UserVO userVO = (UserVO) SecurityUtils.getSubject().getPrincipal();
-        Long userId = userVO.getUserId();
-        //获取shiroService服务类
-        IShiroService shiroService = SpringContextHolder.getBean(IShiroService.class);
-        //获取权限资源
-        Set<String> perms = shiroService.getMenus(userId);
-        //注入权限
+        //获取当前用户ID
+        UserVO user = (UserVO) SecurityUtils.getSubject().getPrincipal();
+        Long userId = user.getId();
+
+        //查询用户资源
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("userid", userId);
+        List<ResourcesVO> resourcesList = resourcesService.loadUserResources(map);
+
+        // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.setStringPermissions(perms);
+        // 注入权限
+        for (ResourcesVO resources : resourcesList) {
+            simpleAuthorizationInfo.addStringPermission(resources.getResUrl());
+        }
         return simpleAuthorizationInfo;
     }
 
@@ -63,21 +76,21 @@ public class MyShiroRealm extends AuthorizingRealm {
         //获取shiroService服务类
         IShiroService shiroService = SpringContextHolder.getBean(IShiroService.class);
         //根据用户名获取用户信息
-        List<UserVO> ListUser = shiroService.getUserByAccount(username);
+        UserVO user = shiroService.getUserByAccount(username);
         //账号为空
-        if (null == ListUser && ListUser.size() == 0) {
+        if (null == user) {
             throw new UnknownAccountException("账号或密码不正确");
         }
         // 密码错误
-        if (!password.equals(ListUser.get(0).getPassword())) {
+        if (!password.equals(user.getPassword())) {
             throw new IncorrectCredentialsException("账号或密码不正确");
         }
         // 账号锁定
-        if (ListUser.get(0).getStatus() == 0) {
+        if (user.getEnable() == 0) {
             throw new LockedAccountException("账号已被锁定,请联系管理员");
         }
 
-        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(ListUser.get(0),password.toCharArray(),getName());
+        SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, password.toCharArray(), getName());
         return simpleAuthenticationInfo;
     }
 }

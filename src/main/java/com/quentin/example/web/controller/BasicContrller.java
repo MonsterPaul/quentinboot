@@ -30,7 +30,7 @@ public class BasicContrller {
     public String getCurrentLoginName() {
         Subject currentUser = SecurityUtils.getSubject();
         UserVO user = currentUser.getPrincipals().oneByType(UserVO.class);
-        return user.getUsername();
+        return user.getUserName();
     }
 
     /**
@@ -44,7 +44,7 @@ public class BasicContrller {
     public Long getCurrentLoginId() {
         Subject currentUser = SecurityUtils.getSubject();
         UserVO user = currentUser.getPrincipals().oneByType(UserVO.class);
-        return user.getUserId();
+        return user.getId();
     }
 
     /**

@@ -4,7 +4,6 @@ import com.quentin.example.config.dynamicsdb.DataSource;
 import com.quentin.example.config.dynamicsdb.DataSourceEnum;
 import com.quentin.example.domain.UserVO;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +24,7 @@ public interface IShiroService {
      * @Date: 2018/2/6 13:42
      * @version 1.0
      */
-    List<UserVO> getUserByAccount(String userName);
+    UserVO getUserByAccount(String userName);
 
     /**
      * 获取授权资源信息
@@ -36,4 +35,16 @@ public interface IShiroService {
      * @version 1.0
      */
     Set<String> getMenus(Long userId);
+
+    /**
+     * 重新加载权限
+     *
+     * @param
+     * @return void
+     * @author guoqun.yang
+     * @date 2018/4/25 22:35
+     * @version 1.0
+     */
+    void updatePermission();
+
 }
